@@ -17,3 +17,6 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"}
 ]
+
+# We want browser automation to be able to read the session cookie’s value.
+SESSION_COOKIE_HTTPONLY = False
