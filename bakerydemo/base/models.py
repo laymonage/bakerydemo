@@ -16,6 +16,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.models import (
     Collection,
     DraftStateMixin,
+    LockableMixin,
     Page,
     PreviewableMixin,
     RevisionMixin,
@@ -136,7 +137,13 @@ class Person(
 
 
 @register_snippet
-class FooterText(DraftStateMixin, RevisionMixin, PreviewableMixin, models.Model):
+class FooterText(
+    LockableMixin,
+    DraftStateMixin,
+    RevisionMixin,
+    PreviewableMixin,
+    models.Model,
+):
     """
     This provides editable text for the site footer. Again it uses the decorator
     `register_snippet` to allow it to be accessible via the admin. It is made
