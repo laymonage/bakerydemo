@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
@@ -23,6 +24,7 @@ from wagtail.models import (
     RevisionMixin,
     Task,
     TaskState,
+    WorkflowMixin,
 )
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -30,8 +32,9 @@ from wagtail.snippets.models import register_snippet
 from .blocks import BaseStreamBlock
 
 
-@register_snippet
 class Person(
+    LockableMixin,
+    WorkflowMixin,
     DraftStateMixin,
     RevisionMixin,
     PreviewableMixin,
@@ -61,6 +64,13 @@ class Person(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+    )
+
+    workflow_states = GenericRelation(
+        "wagtailcore.WorkflowState",
+        content_type_field="base_content_type",
+        object_id_field="object_id",
+        related_query_name="person",
     )
 
     panels = [

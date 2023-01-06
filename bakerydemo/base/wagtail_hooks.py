@@ -3,6 +3,7 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdminGroup,
     modeladmin_register,
 )
+from wagtail.snippets.models import register_snippet
 
 from bakerydemo.base.models import FooterText, Person
 from bakerydemo.breads.models import BreadIngredient, BreadType, Country
@@ -74,3 +75,8 @@ class BakeryModelAdminGroup(ModelAdminGroup):
 # you only need to register the ModelAdminGroup class with Wagtail:
 modeladmin_register(BreadModelAdminGroup)
 modeladmin_register(BakeryModelAdminGroup)
+
+register_snippet(Person)
+register_snippet(BreadIngredient)
+register_snippet(BreadType)
+register_snippet(Country)

@@ -1,18 +1,23 @@
 from django import forms
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
 from modelcluster.fields import ParentalManyToManyField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
-from wagtail.models import DraftStateMixin, Page, RevisionMixin
+from wagtail.models import (
+    DraftStateMixin,
+    LockableMixin,
+    Page,
+    RevisionMixin,
+    WorkflowMixin,
+)
 from wagtail.search import index
-from wagtail.snippets.models import register_snippet
 
 from bakerydemo.base.blocks import BaseStreamBlock
 
 
-@register_snippet
-class Country(models.Model):
+class Country(LockableMixin, models.Model):
     """
     A Django model to store set of countries of origin.
     It uses the `@register_snippet` decorator to allow it to be accessible
@@ -32,8 +37,9 @@ class Country(models.Model):
         verbose_name_plural = "Countries of Origin"
 
 
-@register_snippet
-class BreadIngredient(DraftStateMixin, RevisionMixin, models.Model):
+class BreadIngredient(
+    LockableMixin, WorkflowMixin, DraftStateMixin, RevisionMixin, models.Model
+):
     """
     Standard Django model that is displayed as a snippet within the admin due
     to the `@register_snippet` decorator. We use a new piece of functionality
@@ -43,6 +49,14 @@ class BreadIngredient(DraftStateMixin, RevisionMixin, models.Model):
     """
 
     name = models.CharField(max_length=255)
+
+    workflow_states = GenericRelation(
+        "wagtailcore.WorkflowState",
+        content_type_field="base_content_type",
+        object_id_field="object_id",
+        related_query_name="bread_ingredient",
+        for_concrete_model=False,
+    )
 
     panels = [
         FieldPanel("name"),
@@ -55,7 +69,6 @@ class BreadIngredient(DraftStateMixin, RevisionMixin, models.Model):
         verbose_name_plural = "Bread ingredients"
 
 
-@register_snippet
 class BreadType(RevisionMixin, models.Model):
     """
     A Django model to define the bread type
