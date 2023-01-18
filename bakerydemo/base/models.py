@@ -33,8 +33,8 @@ from .blocks import BaseStreamBlock
 
 
 class Person(
-    LockableMixin,
     WorkflowMixin,
+    LockableMixin,
     DraftStateMixin,
     RevisionMixin,
     PreviewableMixin,

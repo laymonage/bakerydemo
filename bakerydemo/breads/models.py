@@ -38,7 +38,7 @@ class Country(LockableMixin, models.Model):
 
 
 class BreadIngredient(
-    LockableMixin, WorkflowMixin, DraftStateMixin, RevisionMixin, models.Model
+    WorkflowMixin, LockableMixin, DraftStateMixin, RevisionMixin, models.Model
 ):
     """
     Standard Django model that is displayed as a snippet within the admin due
