@@ -24,6 +24,7 @@ from wagtail.models import (
     RevisionMixin,
     Task,
     TaskState,
+    TranslatableMixin,
     WorkflowMixin,
 )
 from wagtail.search import index
@@ -155,6 +156,7 @@ class FooterText(
     DraftStateMixin,
     RevisionMixin,
     PreviewableMixin,
+    TranslatableMixin,
     models.Model,
 ):
     """
@@ -180,7 +182,7 @@ class FooterText(
     def get_preview_context(self, request, mode_name):
         return {"footer_text": self.body}
 
-    class Meta:
+    class Meta(TranslatableMixin.Meta):
         verbose_name_plural = "Footer Text"
 
 
