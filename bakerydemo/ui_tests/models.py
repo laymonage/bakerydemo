@@ -2,32 +2,28 @@ from datetime import datetime
 
 from django import forms
 from django.db import models
-
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.contrib.taggit import ClusterTaggableManager
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from taggit.models import TaggedItemBase
-
-from wagtail.fields import StreamField, RichTextField
+from wagtail.admin.forms.workflows import AdminTaskChooser
 from wagtail.admin.panels import (
     FieldPanel,
+    FieldRowPanel,
+    HelpPanel,
     InlinePanel,
     MultiFieldPanel,
-    FieldRowPanel,
     PageChooserPanel,
-    HelpPanel,
 )
-from wagtail.admin.widgets.button_select import BooleanButtonSelect
-from wagtail.admin.forms.workflows import AdminTaskChooser
-from wagtail.models import Orderable
-from wagtail.models import Task
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.contrib.forms.panels import FormSubmissionsPanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable, Task
 
 from bakerydemo.base.blocks import BaseStreamBlock
-from bakerydemo.recipes.blocks import RecipeStreamBlock
-from bakerydemo.ui_tests.blocks import ComplexBodyBlock, EveryBlockUnderTheSun
 from bakerydemo.locations.choices import DAY_CHOICES
 from bakerydemo.locations.models import OperatingHours
+from bakerydemo.recipes.blocks import RecipeStreamBlock
+from bakerydemo.ui_tests.blocks import ComplexBodyBlock, EveryBlockUnderTheSun
 
 
 class EverythingPersonRelationship(Orderable, models.Model):
@@ -259,7 +255,7 @@ class EverythingPage(AbstractEmailForm):
         FieldPanel("choices_select_multiple", widget=forms.SelectMultiple),
         FieldPanel("choices_checkbox_multiple", widget=forms.CheckboxSelectMultiple),
         FieldPanel("choices_radio_select", widget=forms.RadioSelect),
-        FieldPanel("choices_button_select", widget=BooleanButtonSelect),
+        FieldPanel("choices_button_select"),
         FieldPanel("image"),
         FieldPanel("featured_page", icon="redirect"),
         FieldPanel("file_download"),
