@@ -8,7 +8,14 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 
 from wagtail.fields import StreamField, RichTextField
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel, PageChooserPanel, HelpPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    FieldRowPanel,
+    PageChooserPanel,
+    HelpPanel,
+)
 from wagtail.admin.widgets.button_select import BooleanButtonSelect
 from wagtail.admin.forms.workflows import AdminTaskChooser
 from wagtail.models import Orderable
@@ -39,17 +46,13 @@ class EverythingPersonRelationship(Orderable, models.Model):
 
 class EverythingOperatingHours(Orderable, OperatingHours):
     location = ParentalKey(
-        'EverythingPage',
-        related_name='hours_of_operation',
-        on_delete=models.CASCADE
+        "EverythingPage", related_name="hours_of_operation", on_delete=models.CASCADE
     )
 
 
 class EverythingWorkflowTasks(Orderable):
     page = ParentalKey(
-        'EverythingPage',
-        related_name='workflow_tasks',
-        on_delete=models.CASCADE
+        "EverythingPage", related_name="workflow_tasks", on_delete=models.CASCADE
     )
     task = models.ForeignKey(
         Task,
@@ -61,21 +64,31 @@ class EverythingWorkflowTasks(Orderable):
     class Meta(Orderable.Meta):
         unique_together = [("page", "task")]
 
+
 class FormField(AbstractFormField):
     """
     https://docs.wagtail.org/en/stable/reference/contrib/forms/index.html
     """
-    page = ParentalKey('EverythingPage', related_name='form_fields', on_delete=models.CASCADE)
+
+    page = ParentalKey(
+        "EverythingPage", related_name="form_fields", on_delete=models.CASCADE
+    )
 
 
 class EverythingPageTag(TaggedItemBase):
-    content_object = ParentalKey('ui_tests.EverythingPage', on_delete=models.CASCADE, related_name='tagged_items')
+    content_object = ParentalKey(
+        "ui_tests.EverythingPage", on_delete=models.CASCADE, related_name="tagged_items"
+    )
 
 
 class EverythingPage(AbstractEmailForm):
     char_field = models.CharField(max_length=100, help_text="CharField")
-    char_field_optional = models.CharField(max_length=100, help_text="CharField", blank=True)
-    char_field_no_comments = models.CharField(max_length=100, help_text="CharField no comments", blank=True)
+    char_field_optional = models.CharField(
+        max_length=100, help_text="CharField", blank=True
+    )
+    char_field_no_comments = models.CharField(
+        max_length=100, help_text="CharField no comments", blank=True
+    )
     char_field_default = models.CharField(
         blank=True,
         max_length=32,
@@ -83,49 +96,55 @@ class EverythingPage(AbstractEmailForm):
         default="This is default value",
     )
     text_field = models.TextField(max_length=500, help_text="TextField")
-    text_field_optional = models.TextField(max_length=500, help_text="TextField", blank=True)
+    text_field_optional = models.TextField(
+        max_length=500, help_text="TextField", blank=True
+    )
     richtext_field = RichTextField(help_text="RichTextField")
-    richtext_field_optional = RichTextField(help_text="RichTextField optional", blank=True)
-    richtext_field_no_comments = RichTextField(help_text="RichTextField no comments", blank=True)
+    richtext_field_optional = RichTextField(
+        help_text="RichTextField optional", blank=True
+    )
+    richtext_field_no_comments = RichTextField(
+        help_text="RichTextField no comments", blank=True
+    )
 
     choices = models.CharField(
         max_length=10,
         choices=DAY_CHOICES,
-        default='MON',
+        default="MON",
         blank=True,
     )
     choices_select_multiple = models.CharField(
         max_length=10,
         choices=DAY_CHOICES,
-        default='MON',
+        default="MON",
         blank=True,
     )
     choices_checkbox_multiple = models.CharField(
         max_length=10,
         choices=DAY_CHOICES,
-        default='MON',
+        default="MON",
         blank=True,
     )
     choices_radio_select = models.CharField(
         max_length=10,
         choices=DAY_CHOICES,
-        default='MON',
+        default="MON",
         blank=True,
     )
     choices_button_select = models.CharField(
         max_length=10,
         choices=DAY_CHOICES,
-        default='MON',
+        default="MON",
         blank=True,
     )
 
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+',
-        help_text='image help_text'
+        related_name="+",
+        help_text="image help_text",
     )
     featured_page = models.ForeignKey(
         "wagtailcore.Page",
@@ -133,7 +152,7 @@ class EverythingPage(AbstractEmailForm):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text='featured_page help_text'
+        help_text="featured_page help_text",
     )
     file_download = models.ForeignKey(
         "wagtaildocs.Document",
@@ -146,7 +165,9 @@ class EverythingPage(AbstractEmailForm):
     tags = ClusterTaggableManager(through=EverythingPageTag, blank=True)
 
     char_field_title = models.CharField(max_length=100, help_text="CharField title")
-    char_field_password = models.CharField(max_length=100, help_text="CharField password", blank=True)
+    char_field_password = models.CharField(
+        max_length=100, help_text="CharField password", blank=True
+    )
 
     # auto_field = models.AutoField(help_text="AutoField")
     # bigauto_field = models.BigAutoField(help_text="BigAutoField")
@@ -156,23 +177,37 @@ class EverythingPage(AbstractEmailForm):
     date_field = models.DateField(help_text="DateField")
     datetime_field = models.DateTimeField(help_text="DateTimeField")
     time_field = models.TimeField(help_text="TimeField")
-    decimal_field = models.DecimalField(help_text="DecimalField", max_digits=10, decimal_places=2)
-    duration_field = models.DurationField(help_text="DurationField", null=True, blank=True)
+    decimal_field = models.DecimalField(
+        help_text="DecimalField", max_digits=10, decimal_places=2
+    )
+    duration_field = models.DurationField(
+        help_text="DurationField", null=True, blank=True
+    )
     email_field = models.EmailField(help_text="EmailField")
     file_field = models.FileField(help_text="FileField", blank=True)
     file_field_clearable = models.FileField(help_text="FileField clearable", blank=True)
     # filepath_field = models.FilePathField(help_text="FilePathField")
     float_field = models.FloatField(help_text="FloatField")
-    genericipaddress_field = models.GenericIPAddressField(help_text="GenericIPAddressField", null=True, blank=True)
+    genericipaddress_field = models.GenericIPAddressField(
+        help_text="GenericIPAddressField", null=True, blank=True
+    )
     image_field = models.ImageField(help_text="ImageField", null=True, blank=True)
     integer_field = models.IntegerField(help_text="IntegerField")
     json_field = models.JSONField(help_text="JSONField")
-    positivebiginteger_field = models.PositiveBigIntegerField(help_text="PositiveBigIntegerField", null=True, blank=True)
-    positiveinteger_field = models.PositiveIntegerField(help_text="PositiveIntegerField", null=True, blank=True)
-    positivesmallinteger_field = models.PositiveSmallIntegerField(help_text="PositiveSmallIntegerField", null=True, blank=True)
+    positivebiginteger_field = models.PositiveBigIntegerField(
+        help_text="PositiveBigIntegerField", null=True, blank=True
+    )
+    positiveinteger_field = models.PositiveIntegerField(
+        help_text="PositiveIntegerField", null=True, blank=True
+    )
+    positivesmallinteger_field = models.PositiveSmallIntegerField(
+        help_text="PositiveSmallIntegerField", null=True, blank=True
+    )
     slug_field = models.SlugField(help_text="SlugField", blank=True)
     # smallauto_field = models.SmallAutoField(help_text="SmallAutoField")
-    smallinteger_field = models.SmallIntegerField(help_text="SmallIntegerField", null=True, blank=True)
+    smallinteger_field = models.SmallIntegerField(
+        help_text="SmallIntegerField", null=True, blank=True
+    )
     url_field = models.URLField(help_text="URLField")
     uuid_field = models.UUIDField(help_text="UUIDField", null=True, blank=True)
 
@@ -209,66 +244,97 @@ class EverythingPage(AbstractEmailForm):
     every_block_under_the_sun = StreamField(
         EveryBlockUnderTheSun(), blank=True, use_json_field=True
     )
-    ingredients = ParentalManyToManyField('breads.BreadIngredient', blank=True)
+    ingredients = ParentalManyToManyField("breads.BreadIngredient", blank=True)
 
     content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('char_field'),
-        FieldPanel('char_field_optional'),
-        FieldPanel('char_field_no_comments', disable_comments=True),
-        FieldPanel('text_field', icon="pilcrow"),
-        FieldPanel('text_field_optional', classname="full"),
-        FieldPanel('richtext_field', icon="doc-full"),
-        FieldPanel('richtext_field_optional'),
-        FieldPanel('richtext_field_no_comments', disable_comments=True),
-        FieldPanel('choices'),
-        FieldPanel('choices_select_multiple', widget=forms.SelectMultiple),
-        FieldPanel('choices_checkbox_multiple', widget=forms.CheckboxSelectMultiple),
-        FieldPanel('choices_radio_select', widget=forms.RadioSelect),
-        FieldPanel('choices_button_select', widget=BooleanButtonSelect),
-        FieldPanel('image'),
+        FieldPanel("char_field"),
+        FieldPanel("char_field_optional"),
+        FieldPanel("char_field_no_comments", disable_comments=True),
+        FieldPanel("text_field", icon="pilcrow"),
+        FieldPanel("text_field_optional", classname="full"),
+        FieldPanel("richtext_field", icon="doc-full"),
+        FieldPanel("richtext_field_optional"),
+        FieldPanel("richtext_field_no_comments", disable_comments=True),
+        FieldPanel("choices"),
+        FieldPanel("choices_select_multiple", widget=forms.SelectMultiple),
+        FieldPanel("choices_checkbox_multiple", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("choices_radio_select", widget=forms.RadioSelect),
+        FieldPanel("choices_button_select", widget=BooleanButtonSelect),
+        FieldPanel("image"),
         FieldPanel("featured_page", icon="redirect"),
-        FieldPanel('file_download'),
-        FieldPanel('tags', icon="tag"),
-        FieldPanel('char_field_title', classname="title"),
-        FieldPanel('char_field_password', widget=forms.PasswordInput()),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ], heading="Field row"),
-            FieldPanel('subject'),
-        ], heading="Email"),
-        FieldPanel('boolean_field', icon="tick-inverse"),
-        FieldPanel('date_field', icon="date"),
-        FieldPanel('datetime_field', icon="date"),
-        FieldPanel('time_field', icon="time"),
-        FieldPanel('decimal_field', widget=forms.NumberInput(attrs={'placeholder': 'Custom placeholder'}), icon="plus-inverse"),
-        FieldPanel('float_field', widget=forms.NumberInput(attrs={'aria-describedby': 'id_custom-aria-describedby'}), icon="plus-inverse"),
-        FieldPanel('duration_field'),
-        FieldPanel('url_field', icon="site"),
-        FieldPanel('email_field', classname="full", icon="mail"),
-        FieldPanel('image_field'),
+        FieldPanel("file_download"),
+        FieldPanel("tags", icon="tag"),
+        FieldPanel("char_field_title", classname="title"),
+        FieldPanel("char_field_password", widget=forms.PasswordInput()),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("from_address", classname="col6"),
+                        FieldPanel("to_address", classname="col6"),
+                    ],
+                    heading="Field row",
+                ),
+                FieldPanel("subject"),
+            ],
+            heading="Email",
+        ),
+        FieldPanel("boolean_field", icon="tick-inverse"),
+        FieldPanel("date_field", icon="date"),
+        FieldPanel("datetime_field", icon="date"),
+        FieldPanel("time_field", icon="time"),
+        FieldPanel(
+            "decimal_field",
+            widget=forms.NumberInput(attrs={"placeholder": "Custom placeholder"}),
+            icon="plus-inverse",
+        ),
+        FieldPanel(
+            "float_field",
+            widget=forms.NumberInput(
+                attrs={"aria-describedby": "id_custom-aria-describedby"}
+            ),
+            icon="plus-inverse",
+        ),
+        FieldPanel("duration_field"),
+        FieldPanel("url_field", icon="site"),
+        FieldPanel("email_field", classname="full", icon="mail"),
+        FieldPanel("image_field"),
         # FieldPanel('filepath_field'),
-        FieldPanel('genericipaddress_field'),
-        FieldPanel('integer_field'),
-        FieldPanel('json_field'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('file_field', classname="col3"),
-                FieldPanel('file_field_clearable', widget=forms.ClearableFileInput(), classname="col3"),
-            ]),
-            FieldRowPanel([
-                FieldPanel('positivebiginteger_field', classname="col2"),
-                FieldPanel('positiveinteger_field', classname="col2"),
-                FieldPanel('positivesmallinteger_field', classname="col2"),
-                MultiFieldPanel([
-                    FieldPanel('slug_field', classname="col2"),
-                    # FieldPanel('smallauto_field', classname="col2"),
-                    FieldPanel('smallinteger_field', classname="col2"),
-                    FieldPanel('uuid_field', classname="col2"),
-                ], heading="Field group inside field row inside field group")
-            ]),
-        ], heading="Niche fields", classname="collapsible collapsed"),
+        FieldPanel("genericipaddress_field"),
+        FieldPanel("integer_field"),
+        FieldPanel("json_field"),
+        MultiFieldPanel(
+            [
+                FieldRowPanel(
+                    [
+                        FieldPanel("file_field", classname="col3"),
+                        FieldPanel(
+                            "file_field_clearable",
+                            widget=forms.ClearableFileInput(),
+                            classname="col3",
+                        ),
+                    ]
+                ),
+                FieldRowPanel(
+                    [
+                        FieldPanel("positivebiginteger_field", classname="col2"),
+                        FieldPanel("positiveinteger_field", classname="col2"),
+                        FieldPanel("positivesmallinteger_field", classname="col2"),
+                        MultiFieldPanel(
+                            [
+                                FieldPanel("slug_field", classname="col2"),
+                                # FieldPanel('smallauto_field', classname="col2"),
+                                FieldPanel("smallinteger_field", classname="col2"),
+                                FieldPanel("uuid_field", classname="col2"),
+                            ],
+                            heading="Field group inside field row inside field group",
+                        ),
+                    ]
+                ),
+            ],
+            heading="Niche fields",
+            classname="collapsible collapsed",
+        ),
         MultiFieldPanel(
             [
                 # Example use case for HelpPanel.
@@ -280,9 +346,9 @@ class EverythingPage(AbstractEmailForm):
             ],
             heading="Preface",
         ),
-        FieldPanel('body'),
-        FieldPanel('complex_body'),
-        FieldPanel('every_block_under_the_sun'),
+        FieldPanel("body"),
+        FieldPanel("complex_body"),
+        FieldPanel("every_block_under_the_sun"),
         InlinePanel(
             "everything_person_relationship",
             heading="Authors",
@@ -292,9 +358,16 @@ class EverythingPage(AbstractEmailForm):
             min_num=1,
             max_num=3,
         ),
-        InlinePanel('hours_of_operation', heading="This is heading", label="This is label", min_num=1, max_num=3, help_text="Use between one and three"),
+        InlinePanel(
+            "hours_of_operation",
+            heading="This is heading",
+            label="This is label",
+            min_num=1,
+            max_num=3,
+            help_text="Use between one and three",
+        ),
         FormSubmissionsPanel(),
-        InlinePanel('form_fields', label="Form fields"),
+        InlinePanel("form_fields", label="Form fields"),
         InlinePanel(
             "workflow_tasks",
             [
@@ -305,10 +378,10 @@ class EverythingPage(AbstractEmailForm):
         MultiFieldPanel(
             [
                 FieldPanel(
-                    'ingredients',
+                    "ingredients",
                     widget=forms.CheckboxSelectMultiple,
                 ),
             ],
-            heading="Let’s choose ingredients"
+            heading="Let’s choose ingredients",
         ),
     ]
