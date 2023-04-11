@@ -12,6 +12,7 @@ from wagtail.admin.panels import (
     PublishingPanel,
 )
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import (
     Collection,
@@ -435,4 +436,5 @@ class FormPage(AbstractEmailForm):
             ],
             "Email",
         ),
+        FormSubmissionsPanel(icon="form"),
     ]

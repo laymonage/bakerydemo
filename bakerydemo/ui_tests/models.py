@@ -255,7 +255,8 @@ class EverythingPage(AbstractEmailForm):
         FieldPanel("choices_radio_select", widget=forms.RadioSelect),
         FieldPanel("choices_button_select"),
         FieldPanel("image"),
-        PageChooserPanel("featured_page", icon="reset"),
+        # Can also use FieldPanel
+        PageChooserPanel("featured_page"),
         FieldPanel("file_download"),
         FieldPanel("tags"),
         FieldPanel("char_field_title", classname="title"),
