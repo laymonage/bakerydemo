@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django import forms
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -246,9 +244,9 @@ class EverythingPage(AbstractEmailForm):
         FieldPanel("char_field"),
         FieldPanel("char_field_optional"),
         FieldPanel("char_field_no_comments", disable_comments=True),
-        FieldPanel("text_field", icon="pilcrow"),
+        FieldPanel("text_field"),
         FieldPanel("text_field_optional", classname="full"),
-        FieldPanel("richtext_field", icon="doc-full"),
+        FieldPanel("richtext_field"),
         FieldPanel("richtext_field_optional"),
         FieldPanel("richtext_field_no_comments", disable_comments=True),
         FieldPanel("choices"),
@@ -257,9 +255,9 @@ class EverythingPage(AbstractEmailForm):
         FieldPanel("choices_radio_select", widget=forms.RadioSelect),
         FieldPanel("choices_button_select"),
         FieldPanel("image"),
-        FieldPanel("featured_page", icon="redirect"),
+        PageChooserPanel("featured_page", icon="reset"),
         FieldPanel("file_download"),
-        FieldPanel("tags", icon="tag"),
+        FieldPanel("tags"),
         FieldPanel("char_field_title", classname="title"),
         FieldPanel("char_field_password", widget=forms.PasswordInput()),
         MultiFieldPanel(
@@ -275,25 +273,27 @@ class EverythingPage(AbstractEmailForm):
             ],
             heading="Email",
         ),
-        FieldPanel("boolean_field", icon="tick-inverse"),
-        FieldPanel("date_field", icon="date"),
-        FieldPanel("datetime_field", icon="date"),
-        FieldPanel("time_field", icon="time"),
+        FieldPanel("boolean_field"),
+        FieldPanel("date_field"),
+        FieldPanel("datetime_field"),
+        FieldPanel("time_field"),
         FieldPanel(
             "decimal_field",
             widget=forms.NumberInput(attrs={"placeholder": "Custom placeholder"}),
-            icon="plus-inverse",
         ),
         FieldPanel(
             "float_field",
             widget=forms.NumberInput(
                 attrs={"aria-describedby": "id_custom-aria-describedby"}
             ),
-            icon="plus-inverse",
         ),
+        # The default template for the help panel does not show the icon,
+        # but it will still be available in the panel's instance, so it's possible
+        # to override the template to show the icon.
+        HelpPanel("This is a help panel", icon="cog"),
         FieldPanel("duration_field"),
-        FieldPanel("url_field", icon="site"),
-        FieldPanel("email_field", classname="full", icon="mail"),
+        FieldPanel("url_field"),
+        FieldPanel("email_field", classname="full"),
         FieldPanel("image_field"),
         # FieldPanel('filepath_field'),
         FieldPanel("genericipaddress_field"),
