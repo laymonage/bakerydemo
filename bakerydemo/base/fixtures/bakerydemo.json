@@ -1553,6 +1553,42 @@
     }
   },
   {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$eIoVnauBvLhA$aPWJSlHK+F/rW7SKunxJ/RnXNQHx0uh6K/kVRyPn0XY=",
+      "last_login": "2023-07-25T16:07:22.500Z",
+      "is_superuser": false,
+      "username": "moderrathor",
+      "first_name": "Moderra",
+      "last_name": "Thor",
+      "email": "moderrathor@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-07-25T15:06:21.400Z",
+      "groups": [["Moderators"]],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$eIoVnauBvLhA$aPWJSlHK+F/rW7SKunxJ/RnXNQHx0uh6K/kVRyPn0XY=",
+      "last_login": "2023-07-25T16:08:14.700Z",
+      "is_superuser": false,
+      "username": "eddythor",
+      "first_name": "Eddy",
+      "last_name": "Thor",
+      "email": "eddythor@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-07-25T15:07:13.600Z",
+      "groups": [["Editors"]],
+      "user_permissions": []
+    }
+  },
+  {
     "model": "wagtailcore.groupapprovaltask",
     "pk": 1,
     "fields": {
