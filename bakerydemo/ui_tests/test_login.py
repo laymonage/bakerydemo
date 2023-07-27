@@ -1,8 +1,23 @@
 import re
 
+import pytest
 from playwright.sync_api import Page, expect
 
 LIVE_SERVER_URL = "http://localhost:8000"
+
+
+@pytest.fixture
+def superuser(page: Page):
+    page.goto(f"{LIVE_SERVER_URL}/admin")
+
+    username_input = page.locator("input[name='username']")
+    password_input = page.locator("input[name='password']")
+
+    username_input.fill("admin")
+    password_input.fill("changeme")
+
+    sign_in_button = page.locator("button[type='submit']")
+    sign_in_button.click()
 
 
 def parse_sql_summary_to_dict(input_string) -> dict | None:
@@ -50,23 +65,7 @@ def record_sql_summary(page: Page, record_property) -> dict:
     record_property("sql_summary", summary_dict)
 
 
-def test_login_wagtail_admin(page: Page, record_property):
-    page.goto(f"{LIVE_SERVER_URL}/admin")
-
-    # Expect a title "to contain" a substring.
-    expect(page).to_have_title(re.compile("Sign in - Wagtail"))
-
-    # create a locator
-    username_input = page.locator("input[name='username']")
-    password_input = page.locator("input[name='password']")
-
-    username_input.fill("admin")
-    password_input.fill("changeme")
-
-    sign_in_button = page.locator("button[type='submit']")
-    sign_in_button.click()
-
-    # Expects the URL to contain /admin/.
+def test_login_wagtail_admin(page: Page, superuser, record_property):
     expect(page).to_have_url(re.compile(f"^{LIVE_SERVER_URL}/admin/$"))
     expect(page).to_have_title(re.compile("Dashboard - Wagtail"))
     expect(page.get_by_text("Welcome to the bakerydemo Wagtail CMS")).to_be_visible()
