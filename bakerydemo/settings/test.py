@@ -20,3 +20,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # We want browser automation to be able to read the session cookie’s value.
 SESSION_COOKIE_HTTPONLY = False
+
+# Always enable Django Debug Toolbar.
+DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda r: True}
