@@ -70,3 +70,10 @@ def test_login_wagtail_admin(page: Page, multi_user, record_property):
     expect(page).to_have_title(re.compile("Dashboard - Wagtail"))
     expect(page.get_by_text("Welcome to the bakerydemo Wagtail CMS")).to_be_visible()
     record_sql_summary(page, record_property)
+
+
+def test_page_explorer_root(page: Page, multi_user, record_property):
+    page.get_by_role("button", name="Pages").click()
+    page.get_by_role("link", name="Welcome to the Wagtail Bakery! English").click()
+
+    record_sql_summary(page, record_property)
