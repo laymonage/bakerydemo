@@ -6,14 +6,14 @@ from playwright.sync_api import Page, expect
 LIVE_SERVER_URL = "http://localhost:8000"
 
 
-@pytest.fixture
-def superuser(page: Page):
+@pytest.fixture(params=["admin", "editor", "moderator"])
+def multi_user(request, page: Page):
     page.goto(f"{LIVE_SERVER_URL}/admin")
 
     username_input = page.locator("input[name='username']")
     password_input = page.locator("input[name='password']")
 
-    username_input.fill("admin")
+    username_input.fill(request.param)
     password_input.fill("changeme")
 
     sign_in_button = page.locator("button[type='submit']")
@@ -65,9 +65,8 @@ def record_sql_summary(page: Page, record_property) -> dict:
     record_property("sql_summary", summary_dict)
 
 
-def test_login_wagtail_admin(page: Page, superuser, record_property):
+def test_login_wagtail_admin(page: Page, multi_user, record_property):
     expect(page).to_have_url(re.compile(f"^{LIVE_SERVER_URL}/admin/$"))
     expect(page).to_have_title(re.compile("Dashboard - Wagtail"))
     expect(page.get_by_text("Welcome to the bakerydemo Wagtail CMS")).to_be_visible()
-
     record_sql_summary(page, record_property)
