@@ -8,4 +8,5 @@ flake8-print==5.0.0
 flake8-assertive==2.0.0
 curlylint==0.13.1
 djhtml==1.4.13
+pytest-django>=4.5.2,<5
 pytest-playwright>=0.3.3,<1
