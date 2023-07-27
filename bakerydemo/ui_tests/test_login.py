@@ -1,9 +1,16 @@
 import re
 
+from django.core.management import call_command
 from playwright.sync_api import Page, expect
+from pytest import fixture
 
 
-def test_login_wagtail_admin(page: Page, live_server):
+@fixture
+def data():
+    call_command("load_initial_data")
+
+
+def test_login_wagtail_admin(page: Page, live_server, data):
     page.goto(f"{live_server.url}/admin")
 
     # Expect a title "to contain" a substring.
