@@ -77,3 +77,27 @@ class TestBenchmark(LiveServerTest):
         page.get_by_role("link", name="Welcome to the Wagtail Bakery! English").click()
 
         self.record_sql_summary(page, record_property)
+
+    def test_explore_blog_index_page(self, page: Page, multi_user, record_property):
+        page.get_by_role("button", name="Pages").click()
+        page.get_by_role(
+            "link", name="View child pages of 'Welcome to the Wagtail Bakery!'"
+        ).click()
+        page.get_by_role("link", name="Blog", exact=True).click()
+
+        self.record_sql_summary(page, record_property)
+
+    def test_edit_blog_page(self, page: Page, multi_user, record_property):
+        page.get_by_role("button", name="Pages").click()
+        page.get_by_role(
+            "link", name="View child pages of 'Welcome to the Wagtail Bakery!'"
+        ).click()
+        page.get_by_role("link", name="View child pages of 'Blog'").click()
+        page.get_by_role("link", name="Edit 'Tracking Wild Yeast'").click()
+
+        self.record_sql_summary(page, record_property)
+
+    def test_image_index(self, page: Page, multi_user, record_property):
+        page.get_by_role("link", name="Images", exact=True).click()
+
+        self.record_sql_summary(page, record_property)
