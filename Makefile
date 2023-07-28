@@ -37,6 +37,6 @@ benchmark:
 	python manage.py load_initial_data
 	python manage.py collectstatic --no-input
 	python manage.py runserver & echo $$! > benchmark_server.pid
-	pytest --html=benchmarks/report-`python3 -c "import django; print(django.get_version())"`-`python3 -c "import wagtail; print(wagtail.get_version(wagtail.VERSION))"`.html --self-contained-html --headed
+	-pytest --html=benchmarks/report-`python3 -c "import django; print(django.get_version())"`-`python3 -c "import wagtail; print(wagtail.get_version(wagtail.VERSION))"`.html --self-contained-html --headed
 	kill `cat benchmark_server.pid`
 	rm benchmark_server.pid
