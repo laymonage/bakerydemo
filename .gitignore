@@ -22,3 +22,5 @@ __pycache__
 /Vagrantfile.local
 !.gitignore
 bakerydemo/collect_static
+/benchmarks/
+*.db
