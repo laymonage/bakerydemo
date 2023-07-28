@@ -22,7 +22,10 @@ AUTH_PASSWORD_VALIDATORS = [
 SESSION_COOKIE_HTTPONLY = False
 
 # Always enable Django Debug Toolbar.
-DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda r: True}
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda r: True,
+    "RESULTS_CACHE_SIZE": 100,
+}
 
 # Disable debug mode to simulate production environment.
 DEBUG = False
