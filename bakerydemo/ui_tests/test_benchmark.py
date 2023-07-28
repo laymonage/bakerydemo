@@ -1,3 +1,4 @@
+import os
 import re
 
 import pytest
@@ -5,7 +6,7 @@ from playwright.sync_api import Page, expect
 
 
 class LiveServerTest:
-    LIVE_SERVER_URL = "http://localhost:8000"
+    LIVE_SERVER_URL = f"http://localhost:{os.environ.get('BENCHMARK_PORT', '8453')}"
 
     @pytest.fixture(params=["admin", "eddythor", "moderrathor"])
     def multi_user(self, request, page: Page):
