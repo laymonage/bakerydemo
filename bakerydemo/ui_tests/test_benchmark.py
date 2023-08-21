@@ -23,7 +23,7 @@ class LiveServerTest:
 
     def parse_sql_summary_to_dict(self, input_string) -> dict | None:
         pattern = (
-            r"(\w+):\s*([\d.]+\s*ms)\s*"
+            r"(\w+):\s*([\d.]+)\s*ms\s*"
             r"\((\d+)\s*queries"
             r"(?:\s*including\s*(\d+)\s*similar)?"
             r"(?:\s*and\s*(\d+) duplicates)?\s*\)"
@@ -33,7 +33,7 @@ class LiveServerTest:
             connection, time, queries, similar, duplicates = match.groups()
             result_dict = {
                 "connection": connection,
-                "query_time": time,
+                "query_time": float(time),
                 "queries": int(queries),
                 "similar": 0,
                 "duplicates": 0,
@@ -44,9 +44,10 @@ class LiveServerTest:
                 result_dict["duplicates"] = int(duplicates)
             return result_dict
         else:
-            return None
+            return {}
 
-    def get_sql_summary(self, page: Page) -> str:
+    def get_sql_summary_str(self, page: Page) -> str:
+        page.reload()
         # Activate the SQL panel if it is not already active.
         page.locator("#djdt-SQLPanel:not(.djdt-active) a").click()
 
@@ -57,11 +58,18 @@ class LiveServerTest:
         summary = description[len(connection_name) :].strip()
         return f"{connection_name}: {summary}"
 
+    def get_sql_summary(self, page: Page) -> str:
+        summary = self.parse_sql_summary_to_dict(self.get_sql_summary_str(page))
+        # Best out of 5
+        for _ in range(4):
+            retry = self.parse_sql_summary_to_dict(self.get_sql_summary_str(page))
+            for key, value in retry.items():
+                summary[key] = min(summary[key], value)
+        return summary
+
     def record_sql_summary(self, page: Page, record_property) -> dict:
-        page.reload()
         summary = self.get_sql_summary(page)
-        summary_dict = self.parse_sql_summary_to_dict(summary)
-        record_property("sql_summary", summary_dict)
+        record_property("sql_summary", summary)
 
 
 class TestBenchmark(LiveServerTest):
