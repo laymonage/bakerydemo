@@ -68,6 +68,10 @@ class LiveServerTest:
         return summary
 
     def record_sql_summary(self, page: Page, record_property) -> dict:
+        # Deactivate history panel to avoid AJAX requests from being recorded.
+        page.context.add_cookies(
+            [{"name": "djdtHistoryPanel", "value": "off", "url": self.LIVE_SERVER_URL}]
+        )
         summary = self.get_sql_summary(page)
         record_property("sql_summary", summary)
 
