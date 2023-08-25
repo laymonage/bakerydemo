@@ -1,13 +1,19 @@
 import pytest
 from pytest_html.result import html
 
-perf_metrics = ["query_time", "queries", "similar", "duplicates"]
+perf_metrics = {
+    "query_time": "Query time",
+    "queries": "Queries",
+    "similar": "Similar",
+    "duplicates": "Duplicates",
+}
 
 
 @pytest.hookimpl(optionalhook=True)
 def pytest_html_results_table_header(cells):
     cells[2:2] = [
-        html.th(metric, col=metric, class_="sortable") for metric in perf_metrics
+        html.th(perf_metrics[metric], col=metric, class_="sortable")
+        for metric in perf_metrics
     ]
 
 
