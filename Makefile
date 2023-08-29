@@ -28,6 +28,7 @@ format-client:
 	npm run fix:js
 
 format: format-server format-client
+
 benchmark: export DJANGO_SETTINGS_MODULE = bakerydemo.settings.test
 benchmark: export DATABASE_URL = sqlite:///benchmark.db
 benchmark:

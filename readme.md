@@ -230,3 +230,21 @@ The demo data includes users with different roles and preferences. You can use t
 ### Ownership of demo content
 
 All content in the demo is public domain. Textual content in this project is either sourced from Wikimedia (Wikipedia for blog posts, [Wikibooks for recipes](https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents)) or is lorem ipsum. All images are from either Wikimedia Commons or other copyright-free sources.
+
+### Benchmarking
+
+To benchmark the demo site, make sure you have installed all the required dependencies:
+
+```bash
+python -m pip install -r requirements/development.txt
+```
+
+Then, run:
+
+```bash
+make benchmark
+```
+
+This will spin up a new SQLite database `benchmark.db`, load the bakerydemo data, run the server in the background on port `$BENCHMARK_PORT` (defaults to `8453`), and run the benchmark tests. The reports will be saved in the `reports` directory under the name `report-{django_version}-{wagtail_version}.html`. After the benchmark is done, the server will be shut down and the database will be removed. The script is not robust yet, so if the tests fail, you may need to clean up the database and server manually.
+
+To run against different versions of Django and Wagtail, install the desired versions and re-run the benchmark. Note that you may need to rebase this branch on top of a newer/earlier bakerydemo commit that works with the specified Wagtail version. This branch is currently compatible with Wagtail 5.0 and 5.1.
