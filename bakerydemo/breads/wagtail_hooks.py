@@ -1,3 +1,5 @@
+from wagtail import hooks
+from wagtail.admin.viewsets.model import ModelViewSet
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 
@@ -17,10 +19,13 @@ class BreadTypeSnippetViewSet(SnippetViewSet):
     search_fields = ("title",)
 
 
-class CountrySnippetViewSet(SnippetViewSet):
+class CountryModelViewSet(ModelViewSet):
     model = Country
     ordering = ("title",)
     search_fields = ("title",)
+    exclude_form_fields = ()
+    add_to_admin_menu = True
+    icon = "globe"
 
 
 # We want to group several snippets together in the admin menu.
@@ -39,8 +44,12 @@ class BreadMenuGroup(SnippetViewSetGroup):
     items = (
         BreadIngredientSnippetViewSet,
         BreadTypeSnippetViewSet,
-        CountrySnippetViewSet,
     )
 
 
 register_snippet(BreadMenuGroup)
+
+
+@hooks.register("register_admin_viewset")
+def register_country_viewset():
+    return CountryModelViewSet()
