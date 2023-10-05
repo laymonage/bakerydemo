@@ -25,6 +25,7 @@ class CountryModelViewSet(ModelViewSet):
     search_fields = ("title",)
     exclude_form_fields = ()
     add_to_admin_menu = True
+    inspect_view_enabled = True
     icon = "globe"
 
 
