@@ -1,4 +1,5 @@
 from wagtail import hooks
+from wagtail.admin.panels import FieldPanel
 from wagtail.admin.viewsets.model import ModelViewSet
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
@@ -27,6 +28,9 @@ class CountryModelViewSet(ModelViewSet):
     add_to_admin_menu = True
     inspect_view_enabled = True
     icon = "globe"
+    panels = [
+        FieldPanel("title"),
+    ]
 
 
 # We want to group several snippets together in the admin menu.
