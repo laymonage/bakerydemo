@@ -142,8 +142,8 @@ class Author(
         return context
 
     class Meta:
-        verbose_name = "Person"
-        verbose_name_plural = "People"
+        verbose_name = "Author"
+        verbose_name_plural = "Authors"
 
 
 class FooterText(
