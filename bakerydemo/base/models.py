@@ -33,7 +33,7 @@ from wagtail.search import index
 from .blocks import BaseStreamBlock
 
 
-class Person(
+class Author(
     WorkflowMixin,
     DraftStateMixin,
     LockableMixin,
@@ -43,11 +43,11 @@ class Person(
     ClusterableModel,
 ):
     """
-    A Django model to store Person objects.
+    A Django model to store Author objects.
     It is registered using `register_snippet` as a function in wagtail_hooks.py
     to allow it to have a menu item within a custom menu item group.
 
-    `Person` uses the `ClusterableModel`, which allows the relationship with
+    `Author` uses the `ClusterableModel`, which allows the relationship with
     another model to be stored locally to the 'parent' model (e.g. a PageModel)
     until the parent is explicitly saved. This allows the editor to use the
     'Preview' button, to preview the content, without saving the relationships
@@ -156,7 +156,7 @@ class FooterText(
     """
     This provides editable text for the site footer. Again it is registered
     using `register_snippet` as a function in wagtail_hooks.py to be grouped
-    together with the Person model inside the same main menu item. It is made
+    together with the Author model inside the same main menu item. It is made
     accessible on the template via a template tag defined in base/templatetags/
     navigation_tags.py
     """

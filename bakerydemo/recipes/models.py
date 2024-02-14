@@ -17,10 +17,10 @@ from .blocks import RecipeStreamBlock
 
 class RecipePersonRelationship(Orderable, models.Model):
     """
-    This defines the relationship between the `Person` within the `base`
+    This defines the relationship between the `Author` within the `base`
     app and the RecipePage below. This allows people to be added to a RecipePage.
 
-    We have created a two way relationship between RecipePage and Person using
+    We have created a two way relationship between RecipePage and Author using
     the ParentalKey and ForeignKey
     """
 
@@ -30,7 +30,7 @@ class RecipePersonRelationship(Orderable, models.Model):
         on_delete=models.CASCADE,
     )
     person = models.ForeignKey(
-        "base.Person",
+        "base.Author",
         related_name="person_recipe_relationship",
         on_delete=models.CASCADE,
     )
@@ -111,7 +111,7 @@ class RecipePage(Page):
         """
         Returns the RecipePage's related people. Again note that we are using
         the ParentalKey's related_name from the RecipePersonRelationship model
-        to access these objects. This allows us to access the Person objects
+        to access these objects. This allows us to access the Author objects
         with a loop on the template. If we tried to access the recipe_person_
         relationship directly we'd print `recipe.RecipePersonRelationship.None`
         """

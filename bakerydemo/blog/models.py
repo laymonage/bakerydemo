@@ -17,10 +17,10 @@ from bakerydemo.base.blocks import BaseStreamBlock
 
 class BlogPersonRelationship(Orderable, models.Model):
     """
-    This defines the relationship between the `Person` within the `base`
+    This defines the relationship between the `Author` within the `base`
     app and the BlogPage below. This allows people to be added to a BlogPage.
 
-    We have created a two way relationship between BlogPage and Person using
+    We have created a two way relationship between BlogPage and Author using
     the ParentalKey and ForeignKey
     """
 
@@ -28,7 +28,7 @@ class BlogPersonRelationship(Orderable, models.Model):
         "BlogPage", related_name="blog_person_relationship", on_delete=models.CASCADE
     )
     person = models.ForeignKey(
-        "base.Person", related_name="person_blog_relationship", on_delete=models.CASCADE
+        "base.Author", related_name="person_blog_relationship", on_delete=models.CASCADE
     )
     panels = [FieldPanel("person")]
 
@@ -49,7 +49,7 @@ class BlogPage(Page):
     """
     A Blog Page
 
-    We access the Person object with an inline panel that references the
+    We access the Author object with an inline panel that references the
     ParentalKey's related_name in BlogPersonRelationship. More docs:
     https://docs.wagtail.org/en/stable/topics/pages.html#inline-models
     """
@@ -95,7 +95,7 @@ class BlogPage(Page):
         """
         Returns the BlogPage's related people. Again note that we are using
         the ParentalKey's related_name from the BlogPersonRelationship model
-        to access these objects. This allows us to access the Person objects
+        to access these objects. This allows us to access the Author objects
         with a loop on the template. If we tried to access the blog_person_
         relationship directly we'd print `blog.BlogPersonRelationship.None`
         """
@@ -178,7 +178,6 @@ class BlogIndexPage(RoutablePageMixin, Page):
     @route(r"^tags/$", name="tag_archive")
     @route(r"^tags/([\w-]+)/$", name="tag_archive")
     def tag_archive(self, request, tag=None):
-
         try:
             tag = Tag.objects.get(slug=tag)
         except Tag.DoesNotExist:

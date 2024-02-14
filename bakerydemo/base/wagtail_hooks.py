@@ -3,7 +3,7 @@ from wagtail.admin.userbar import AccessibilityItem
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 
-from bakerydemo.base.models import FooterText, Person
+from bakerydemo.base.models import Author, FooterText
 
 """
 N.B. To see what icons are available for use in Wagtail menus and StreamField block types,
@@ -43,12 +43,12 @@ def replace_userbar_accessibility_item(request, items):
 
 
 class PersonViewSet(SnippetViewSet):
-    # Instead of decorating the Person model class definition in models.py with
+    # Instead of decorating the Author model class definition in models.py with
     # @register_snippet - which has Wagtail automatically generate an admin interface for this model - we can also provide our own
     # SnippetViewSet class which allows us to customize the admin interface for this snippet.
     # See the documentation for SnippetViewSet for more details
     # https://docs.wagtail.org/en/stable/reference/viewsets.html#snippetviewset
-    model = Person
+    model = Author
     menu_label = "People"  # ditch this to use verbose_name_plural from model
     icon = "group"  # change as required
     list_display = ("first_name", "last_name", "job_title", "thumb_image")
