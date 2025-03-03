@@ -34,6 +34,19 @@ class CaptionedImageBlock(StructBlock):
             "caption": self.preview_image.description,
         }
 
+    def get_api_representation(self, value, context=None):
+        data = super().get_api_representation(value, context)
+        image = value["image"]
+        data["image"] = {
+            "id": image.pk,
+            "title": image.title,
+            "meta": {
+                "type": type(image)._meta.app_label + "." + type(image).__name__,
+                "download_url": image.file.url,
+            },
+        }
+        return data
+
     class Meta:
         icon = "image"
         template = "blocks/captioned_image_block.html"
@@ -86,6 +99,11 @@ class BlockQuote(StructBlock):
         description = "A quote with an optional attribution"
 
 
+class CustomEmbedBlock(EmbedBlock):
+    def get_api_representation(self, value, context=None):
+        return {"url": value.url, "html": value.html}
+
+
 # StreamBlocks
 class BaseStreamBlock(StreamBlock):
     """
@@ -110,7 +128,7 @@ class BaseStreamBlock(StreamBlock):
     )
     image_block = CaptionedImageBlock()
     block_quote = BlockQuote()
-    embed_block = EmbedBlock(
+    embed_block = CustomEmbedBlock(
         help_text="Insert an embed URL e.g https://www.youtube.com/watch?v=SGJFWirQ3ks",
         icon="media",
         template="blocks/embed_block.html",
