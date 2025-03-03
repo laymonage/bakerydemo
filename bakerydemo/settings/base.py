@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.simple_translation",
     "wagtail.contrib.styleguide",
     "wagtail",
+    "wagtail_headless_preview",
     "rest_framework",
     "modelcluster",
     "taggit",
@@ -249,3 +250,9 @@ if "CSP_DEFAULT_SRC" in os.environ:
         CSP_BASE_URI = os.environ.get("CSP_BASE_URI").split(",")
     if "CSP_OBJECT_SRC" in os.environ:
         CSP_OBJECT_SRC = os.environ.get("CSP_OBJECT_SRC").split(",")
+
+WAGTAIL_HEADLESS_PREVIEW = {
+    "CLIENT_URLS": {
+        "default": "http://localhost:3000",
+    },
+}
