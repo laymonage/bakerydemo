@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db import models
 from django.shortcuts import redirect, render
+from django.utils.functional import cached_property
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from taggit.models import Tag, TaggedItemBase
@@ -95,6 +96,7 @@ class BlogPage(Page):
         index.SearchField("introduction"),
         index.SearchField("subtitle"),
         index.SearchField("body"),
+        index.FilterField("date_published"),
     ]
 
     api_fields = [
@@ -122,6 +124,13 @@ class BlogPage(Page):
                 person__live=True
             ).select_related("person")
         ]
+
+    @cached_property
+    def thumb_image(self):
+        return self.image.get_rendition("fill-50x50").img_tag() if self.image else ""
+
+    thumb_image.short_description = "Thumbnail"
+    thumb_image.admin_order_field = "image"
 
     @property
     def get_tags(self):
